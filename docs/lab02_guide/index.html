@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KKU Campus Guide - แนะนำสถานที่ มข.</title>
+    
+    <!-- FAVICON: เปลี่ยนเป็น SVG แบบฝังโค้ด คมชัด สวยงาม สีแดงอิฐ มข. -->
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjEwMCIgZmlsbD0iI0E3M0IyNCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtc2l6ZT0iMjUwIiBmaWxsPSJ3aGl0ZSI+S0tVPC90ZXh0Pjwvc3ZnPg==" type="image/svg+xml">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts (Prompt) -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        /* General Styles */
+        :root {
+            --kku-color: #A73B24; /* สีอิฐ แดงดินเผา มข. */
+            --bg-light: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: var(--bg-light);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden; /* ป้องกัน scroll แนวนอนจาก animation */
+        }
+
+        /* Box Model & Utilities */
+        .section-padding {
+            padding: 60px 0;
+        }
+
+        .text-kku {
+            color: var(--kku-color);
+        }
+
+        .bg-kku {
+            background-color: var(--kku-color);
+            color: white;
+        }
+
+        /* Navbar & Logo */
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--kku-color) !important;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .navbar-logo {
+            height: 45px;
+            width: 45px;
+            /* ปรับแต่งโลโก้ให้สวยขึ้น */
+            border-radius: 12px; 
+            transition: transform 0.3s ease;
+        }
+        .navbar-brand:hover .navbar-logo {
+            transform: rotate(10deg); /* ลูกเล่นหมุนนิดหน่อยตอนเอาเมาส์ชี้ */
+        }
+
+        /* Hero Section */
+        #hero {
+            /* แก้ไขบรรทัดนี้: เปลี่ยน URL ในวงเล็บเป็นชื่อไฟล์รูปของคุณ เช่น url('images/my-kku-bg.jpg') */
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('ฮีโร.jpg') no-repeat center center/cover;
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        #hero h1 {
+            font-size: 3.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-weight: 700;
+        }
+
+        /* Student Card */
+        .student-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-top: -50px; /* Overlap effect */
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+            border-left: 5px solid var(--kku-color);
+        }
+
+        /* Location Cards */
+        .location-card {
+            background: white;
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+
+        .location-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .card-img-wrapper {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .location-card:hover .card-img-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .location-icon {
+            color: var(--kku-color);
+            margin-right: 10px;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            #hero h1 {
+                font-size: 2rem;
+            }
+            .student-card {
+                margin-top: 20px;
+                text-align: center;
+            }
+            .img-gallery {
+                flex-direction: column;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--kku-color);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <!-- ใช้รูปเดียวกับ Favicon แต่ปรับขนาดให้เหมาะสม -->
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjEwMCIgZmlsbD0iI0E3M0IyNCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtc2l6ZT0iMjUwIiBmaWxsPSJ3aGl0ZSI+S0tVPC90ZXh0Pjwvc3ZnPg==" 
+                         alt="KKU Logo" class="navbar-logo shadow-sm">
+                    <span>KKU Guide</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link active" href="#hero">หน้าหลัก</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#locations">สถานที่แนะนำ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#suggestion">แนะนำสถานที่</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#student-info">ผู้จัดทำ</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main -->
+    <main>
+        <!-- Hero Section -->
+        <section id="hero">
+            <div class="container" data-aos="fade-down" data-aos-duration="1200">
+                <h1 class="mb-3">ยินดีต้อนรับสู่ มข.</h1>
+                <p class="lead fs-4">แหล่งเรียนรู้ ศูนย์กลางแห่งภาคอีสาน | Khon Kaen University</p>
+                <a href="#locations" class="btn btn-light btn-lg mt-3 text-danger fw-bold rounded-pill px-4">เริ่มสำรวจ</a>
+            </div>
+        </section>
+
+        <!-- Student Info -->
+        <section id="student-info" class="container mb-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <!-- Added data-aos for animation -->
+                    <div class="student-card d-flex align-items-center justify-content-between flex-wrap" data-aos="zoom-in" data-aos-duration="1000">
+                        <div>
+                            <h5 class="text-uppercase text-muted mb-1">ผู้จัดทำ (Student Profile)</h5>
+                            <!-- *** แก้ไขข้อมูลตรงนี้ *** -->
+                            <h3 class="mb-0 fw-bold">นายณัฐนันท์ ขำสม</h3>
+                            <p class="mb-0 fs-5 text-kku"><i class="fas fa-id-card me-2"></i>รหัสนักศึกษา: 663380382-3</p>
+                            <p class="text-muted small">คณะวิทยาศาสตร์ สาขาวิทยาการคอมพิวเตอร์</p>
+                        </div>
+                        <!-- เปลี่ยนจากไอคอนเป็นรูปภาพโปรไฟล์ -->
+                        <div class="d-none d-md-block ms-4">
+                            <!-- *** แก้ไข: เปลี่ยน src เป็น path ไฟล์รูปของคุณ *** -->
+                            <img src="me.jpeg" 
+                                 alt="รูปโปรไฟล์นักศึกษา" 
+                                 class="rounded-circle img-fluid shadow-sm" 
+                                 style="width: 120px; height: 120px; object-fit: cover; border: 3px solid var(--kku-color);"
+                                 onerror="this.src='https://placehold.co/120x120/A73B24/white?text=Profile'"> <!-- รูป placeholder กรณีหาไฟล์ไม่เจอ -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Locations Section -->
+        <section id="locations" class="section-padding">
+            <div class="container">
+                <div class="text-center mb-5" data-aos="fade-up">
+                    <h2 class="fw-bold display-6"><span class="text-kku">4 สถานที่</span> ยอดนิยมใน มข.</h2>
+                    <div style="width: 60px; height: 4px; background: var(--kku-color); margin: 10px auto;"></div>
+                    <p class="text-muted">สัมผัสบรรยากาศ การเรียนรู้ และการพักผ่อน</p>
+                </div>
+
+                <!--1: บึงสีฐาน -->
+                <!-- Added data-aos="fade-right" -->
+                <article class="row align-items-center mb-5 border-bottom pb-5" data-aos="fade-right" data-aos-offset="200">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <h3 class="fw-bold mb-3"><i class="fas fa-water location-icon"></i>1. บึงสีฐาน (Sithan Lake)</h3>
+                        <p class="text-muted">
+                            สถานที่พักผ่อนหย่อนใจยอดนิยมของชาว มข. และบุคคลภายนอก ประกอบด้วยบึงน้ำขนาดใหญ่สองฝั่ง 
+                            เป็นสถานที่จัดงานลอยกระทงประจำปี งานวิ่งมาราธอน และมีลานวัฒนธรรม ช่วงเย็นบรรยากาศดีมาก 
+                            เหมาะแก่การวิ่งออกกำลังกายและดูพระอาทิตย์ตก
+                        </p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>จุดชมวิวพระอาทิตย์ตก</li>
+                            <li><i class="fas fa-check text-success me-2"></i>ลานวัฒนธรรม</li>
+                            <li><i class="fas fa-check text-success me-2"></i>KKU Art Gallery</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <img src="บึง1.jpg" class="img-fluid rounded shadow-sm" alt="บึงสีฐาน 1" onerror="this.src='https://placehold.co/600x400/orange/white?text=Sithan+1'">
+                            </div>
+                            <div class="col-6">
+                                <img src="บึง2.jpg" class="img-fluid rounded shadow-sm" alt="บึงสีฐาน 2" onerror="this.src='https://placehold.co/600x400/green/white?text=Sithan+2'">
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!--2: หอประชุมกาญจนาภิเษก -->
+                <!-- Added data-aos="fade-left" -->
+                <article class="row align-items-center mb-5 border-bottom pb-5 flex-lg-row-reverse" data-aos="fade-left" data-aos-offset="200">
+                    <div class="col-lg-6 mb-4 mb-lg-0 ps-lg-5">
+                        <h3 class="fw-bold mb-3"><i class="fas fa-landmark location-icon"></i>2. หอประชุมกาญจนาภิเษก</h3>
+                        <p class="text-muted">
+                            ศูนย์ประชุมอเนกประสงค์กาญจนาภิเษก (Golden Jubilee Convention Hall) เป็นสัญลักษณ์แห่งความภาคภูมิใจ 
+                            ใช้สำหรับพิธีพระราชทานปริญญาบัตร และงานระดับชาติ รูปทรงสถาปัตยกรรมอีสานประยุกต์ที่สวยงามและยิ่งใหญ่ 
+                            ตั้งอยู่ริมบึงสีฐาน
+                        </p>
+                        <span class="badge bg-kku">Landmark</span>
+                        <span class="badge bg-secondary">Event Center</span>
+                    </div>
+                    <div class="col-lg-6">
+                         <div class="row g-2">
+                            <div class="col-12">
+                                <img src="หอกาษ1.png" class="img-fluid rounded shadow-sm w-100" alt="หอกาญ 1" onerror="this.src='https://placehold.co/800x400/8B4513/white?text=Golden+Jubilee'">
+                            </div>
+                            <div class="col-6">
+                                <img src="หอกาญ2.jpg" class="img-fluid rounded shadow-sm" alt="หอกาญ 2" onerror="this.src='https://placehold.co/400x300/A0522D/white?text=Hall+Side'">
+                            </div>
+                            <div class="col-6">
+                                <img src="หอกาญ-3.jpg" class="img-fluid rounded shadow-sm" alt="หอกาญ 3" onerror="this.src='https://placehold.co/400x300/CD853F/white?text=Graduation'">
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!--3: หอสมุดกลาง -->
+                <!-- Added data-aos="fade-right" -->
+                <article class="row align-items-center mb-5 border-bottom pb-5" data-aos="fade-right" data-aos-offset="200">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <h3 class="fw-bold mb-3"><i class="fas fa-book-reader location-icon"></i>3. สำนักหอสมุด (KKU Library)</h3>
+                        <p class="text-muted">
+                            ศูนย์กลางแห่งการเรียนรู้ หรือ "หอสมุดกลาง" เป็น Learning Center ที่ทันสมัย เปิดให้บริการ 24 ชั่วโมงในช่วงสอบ 
+                            มีพื้นที่ Co-working space, ห้องประชุมกลุ่มย่อย, โรงหนังขนาดเล็ก และโซนอ่านหนังสือที่สะดวกสบาย 
+                            ตอบโจทย์ไลฟ์สไตล์นักศึกษายุคใหม่
+                        </p>
+                        <button class="btn btn-outline-danger btn-sm rounded-pill">อ่านเพิ่มเติม</button>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <img src="หอสมุด1.png" class="img-fluid rounded shadow-sm h-100 object-fit-cover" alt="หอสมุด 1" onerror="this.src='https://placehold.co/400x500/333/white?text=Library'">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <img src="หอสมุด2.jpg" class="img-fluid rounded shadow-sm" alt="หอสมุด 2" onerror="this.src='https://placehold.co/400x245/555/white?text=Zone+A'">
+                                    </div>
+                                    <div class="col-12">
+                                        <img src="หอสมุด3.jpg" class="img-fluid rounded shadow-sm" alt="หอสมุด 3" onerror="this.src='https://placehold.co/400x245/777/white?text=Zone+B'">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 4: พิพิธภัณฑ์ธรรมชาติวิทยา -->
+                <!-- Added data-aos="fade-up" -->
+                <article class="row align-items-center" data-aos="fade-up" data-aos-offset="200">
+                    <div class="col-lg-6 mb-4 mb-lg-0 ps-lg-5 order-lg-last">
+                        <h3 class="fw-bold mb-3"><i class="fas fa-dna location-icon"></i>4. พิพิธภัณฑ์ธรรมชาติวิทยา</h3>
+                        <p class="text-muted">
+                            ตั้งอยู่บริเวณริมบึงสีฐาน เป็นแหล่งเรียนรู้ทางด้านวิทยาศาสตร์และธรรมชาติวิทยา 
+                            มีการจัดแสดงนิทรรศการถาวรเกี่ยวกับกำเนิดโลก วิวัฒนาการสิ่งมีชีวิต และความหลากหลายทางชีวภาพในภาคอีสาน 
+                            รวมถึงสวนวิทยาศาสตร์ที่มีความร่มรื่น
+                        </p>
+                    </div>
+                    <div class="col-lg-6 order-lg-first">
+                         <div class="d-flex gap-2 overflow-auto pb-2 img-gallery">
+                            <img src="ธรรม2.jpeg" class="rounded shadow-sm flex-shrink-0" alt="พิพิธภัณฑ์ 1" onerror="this.src='https://placehold.co/350x250/2E8B57/white?text=Museum+1'">
+                            <img src="ธรรม1.jpg" class="rounded shadow-sm flex-shrink-0" alt="พิพิธภัณฑ์ 2" onerror="this.src='https://placehold.co/350x250/3CB371/white?text=Museum+2'">
+                            <img src="ธรรม3.avif" class="rounded shadow-sm flex-shrink-0" alt="พิพิธภัณฑ์ 3" onerror="this.src='https://placehold.co/350x250/20B2AA/white?text=Museum+3'">
+                        </div>
+                        <small class="text-muted fst-italic">*เลื่อนเพื่อดูรูปภาพเพิ่มเติม</small>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Suggestion Form Section -->
+        <section id="suggestion" class="section-padding bg-white border-top">
+            <div class="container" data-aos="fade-up">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card shadow border-0 rounded-4 overflow-hidden">
+                            <div class="card-header bg-kku text-white p-4 text-center">
+                                <h3 class="mb-0 fw-bold"><i class="fas fa-paper-plane me-2"></i>แนะนำสถานที่ใหม่</h3>
+                                <p class="mb-0 opacity-75 small">ร่วมแบ่งปันสถานที่น่าสนใจใน มข. กับเรา</p>
+                            </div>
+                            <div class="card-body p-4 p-md-5">
+                                <form action="https://api.web3forms.com/submit" method="POST">
+                                    <!-- 
+                                        *** สำคัญ: นักศึกษาต้องสมัคร web3forms.com เพื่อรับ Access Key *** แล้วนำมาใส่ใน value ด้านล่างนี้แทนที่ "YOUR_ACCESS_KEY_HERE"
+                                    -->
+                                    <input type="hidden" name="access_key" value="d9bb1c62-42c9-4375-9244-cbce1322a505">
+
+                                    <div class="mb-3">
+                                        <label for="placeName" class="form-label fw-bold">ชื่อสถานที่</label>
+                                        <input type="text" class="form-control bg-light" id="placeName" name="ชื่อสถานที่" required placeholder="เช่น อุทยานเทคโนโลยีการเกษตร">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="placeDetails" class="form-label fw-bold">รายละเอียด</label>
+                                        <textarea class="form-control bg-light" id="placeDetails" name="รายละเอียด" rows="4" required placeholder="อธิบายจุดเด่น บรรยากาศ หรือสิ่งที่น่าสนใจ..."></textarea>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="imageUrl" class="form-label fw-bold">URL ของภาพประกอบ (ถ้ามี)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light"><i class="fas fa-link text-muted"></i></span>
+                                            <input type="url" class="form-control bg-light" id="imageUrl" name="URL_ภาพ" placeholder="https://example.com/image.jpg">
+                                        </div>
+                                        <div class="form-text">สามารถคัดลอก Link รูปภาพจาก Facebook หรือ Google มาวางได้</div>
+                                    </div>
+
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-danger btn-lg rounded-pill fw-bold shadow-sm hover-scale">
+                                            <i class="fas fa-check-circle me-2"></i>ส่งข้อมูล
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="text-center mt-3 text-muted small">
+                            * ข้อมูลจะถูกส่งไปยังอีเมลของผู้จัดทำผ่านระบบ Web3Forms
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-5 pb-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5 class="text-uppercase fw-bold text-danger">KKU Guide</h5>
+                    <p class="small">เว็บไซต์แนะนำสถานที่ภายในมหาวิทยาลัยขอนแก่น เพื่อให้นักศึกษาและบุคคลทั่วไปได้รู้จักสถานที่สำคัญ</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold">ลิงก์ที่เกี่ยวข้อง</h5>
+                    <ul class="list-unstyled small">
+                        <li><a href="#" class="text-white-50 text-decoration-none">เว็บไซต์มหาวิทยาลัย</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">ระบบทะเบียน</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">แผนที่ มข.</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3 text-md-end">
+                    <p class="small text-white-50">
+                        จัดทำโดย<br>
+                        รหัสนักศึกษา: 663380382-3<br>
+                        มหาวิทยาลัยขอนแก่น
+                    </p>
+                </div>
+            </div>
+            <hr class="border-secondary">
+            <div class="text-center small text-white-50">
+                &copy; 2025 KKU Campus Guide Project. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- AOS Animation Library JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000, // ระยะเวลา animation (ms)
+            once: true,     // เล่น animation แค่ครั้งเดียวตอนเลื่อนลง
+        });
+    </script>
+</body>
+</html>
