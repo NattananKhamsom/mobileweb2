@@ -6,8 +6,66 @@
     <title>KKU Campus Guide - แนะนำสถานที่ มข.</title>
     
     <!-- FAVICON: เปลี่ยนเป็น SVG แบบฝังโค้ด คมชัด สวยงาม สีแดงอิฐ มข. -->
-    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjEwMCIgZmlsbD0iI0E3M0IyNCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtc2l6ZT0iMjUwIiBmaWxsPSJ3aGl0ZSI+S0tVPC90ZXh0Pjwvc3ZnPg==" type="image/svg+xml">
+    <link id="favicon" rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjEwMCIgZmlsbD0iI0E3M0IyNCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtc2l6ZT0iMjUwIiBmaWxsPSJ3aGl0ZSI+S0tVPC90ZXh0Pjwvc3ZnPg==" type="image/svg+xml">
 
+    <!-- FAVICON ANIMATION SCRIPT: วงแหวนหมุนและตัวอักษร Pulse -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var canvas = document.createElement('canvas');
+            canvas.width = 32;
+            canvas.height = 32;
+            var ctx = canvas.getContext('2d');
+            var link = document.getElementById('favicon');
+            
+            var angle = 0; // มุมหมุนเริ่มต้น
+
+            function animate() {
+                // 1. ล้างกระดาน
+                ctx.clearRect(0, 0, 32, 32);
+
+                // 2. วาดพื้นหลังวงกลมสีแดงอิฐ มข.
+                ctx.fillStyle = '#A73B24';
+                ctx.beginPath();
+                ctx.arc(16, 16, 16, 0, Math.PI * 2);
+                ctx.fill();
+
+                // 3. วาดวงแหวนโหลดสีทอง (Golden Loading Ring)
+                ctx.strokeStyle = '#FFD700'; // สีทอง
+                ctx.lineWidth = 3;
+                ctx.lineCap = 'round'; // ปลายเส้นมน
+                ctx.beginPath();
+                // วาดเส้นโค้งยาว 1/4 ของวงกลม หมุนตามค่า angle
+                ctx.arc(16, 16, 13, angle, angle + Math.PI / 1.5); 
+                ctx.stroke();
+
+                // 4. วาดตัวหนังสือ KKU พร้อม Pulse Effect (ขยายเข้าออก)
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = 'bold 10px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                // คำนวณการขยาย (Scale) โดยใช้ Sine wave
+                var scale = 1 + Math.sin(angle * 3) * 0.1; 
+
+                ctx.save();
+                ctx.translate(16, 16); // ย้ายจุดศูนย์กลางไปที่กลางภาพ
+                ctx.scale(scale, scale); // ขยายตามค่าที่คำนวณ
+                ctx.fillText('KKU', 0, 1); // วาดตัวอักษร (ปรับ y นิดหน่อยให้กลางเป๊ะ)
+                ctx.restore();
+
+                // 5. อัปเดตค่ามุมหมุน
+                angle += 0.15; // ความเร็วการหมุน
+
+                // 6. อัปเดตไปที่ Favicon Tag
+                link.href = canvas.toDataURL('image/png');
+
+                // 7. วนลูป (ใช้ setTimeout เพื่อควบคุม Frame rate ไม่ให้กิน CPU)
+                setTimeout(animate, 50);
+            }
+
+            animate();
+        });
+    </script>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts (Prompt) -->
