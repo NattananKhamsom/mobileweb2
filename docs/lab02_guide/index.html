@@ -5,67 +5,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KKU Campus Guide - แนะนำสถานที่ มข.</title>
     
-    <!-- FAVICON: เปลี่ยนเป็น SVG แบบฝังโค้ด คมชัด สวยงาม สีแดงอิฐ มข. -->
+    <!-- FAVICON (Static): สำหรับ Browser ที่ไม่รองรับ JS -->
     <link id="favicon" rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjEwMCIgZmlsbD0iI0E3M0IyNCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtc2l6ZT0iMjUwIiBmaWxsPSJ3aGl0ZSI+S0tVPC90ZXh0Pjwvc3ZnPg==" type="image/svg+xml">
 
-    <!-- FAVICON ANIMATION SCRIPT: วงแหวนหมุนและตัวอักษร Pulse -->
+    <!-- ANIMATION SCRIPT: ควบคุมทั้ง Favicon และ Navbar Logo -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var canvas = document.createElement('canvas');
-            canvas.width = 32;
-            canvas.height = 32;
-            var ctx = canvas.getContext('2d');
+            // ==========================================
+            // 1. FAVICON ANIMATION (ไอคอนบนแท็บ Browser)
+            // ==========================================
+            var favCanvas = document.createElement('canvas');
+            favCanvas.width = 32;
+            favCanvas.height = 32;
+            var favCtx = favCanvas.getContext('2d');
             var link = document.getElementById('favicon');
-            
-            var angle = 0; // มุมหมุนเริ่มต้น
+            var favAngle = 0;
 
-            function animate() {
-                // 1. ล้างกระดาน
-                ctx.clearRect(0, 0, 32, 32);
-
-                // 2. วาดพื้นหลังวงกลมสีแดงอิฐ มข.
-                ctx.fillStyle = '#A73B24';
-                ctx.beginPath();
-                ctx.arc(16, 16, 16, 0, Math.PI * 2);
-                ctx.fill();
-
-                // 3. วาดวงแหวนโหลดสีทอง (Golden Loading Ring)
-                ctx.strokeStyle = '#FFD700'; // สีทอง
-                ctx.lineWidth = 3;
-                ctx.lineCap = 'round'; // ปลายเส้นมน
-                ctx.beginPath();
-                // วาดเส้นโค้งยาว 1/4 ของวงกลม หมุนตามค่า angle
-                ctx.arc(16, 16, 13, angle, angle + Math.PI / 1.5); 
-                ctx.stroke();
-
-                // 4. วาดตัวหนังสือ KKU พร้อม Pulse Effect (ขยายเข้าออก)
-                ctx.fillStyle = '#FFFFFF';
-                ctx.font = 'bold 10px sans-serif';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
+            function animateFavicon() {
+                favCtx.clearRect(0, 0, 32, 32);
                 
-                // คำนวณการขยาย (Scale) โดยใช้ Sine wave
-                var scale = 1 + Math.sin(angle * 3) * 0.1; 
+                // Background
+                favCtx.fillStyle = '#A73B24';
+                favCtx.beginPath();
+                favCtx.arc(16, 16, 16, 0, Math.PI * 2);
+                favCtx.fill();
 
-                ctx.save();
-                ctx.translate(16, 16); // ย้ายจุดศูนย์กลางไปที่กลางภาพ
-                ctx.scale(scale, scale); // ขยายตามค่าที่คำนวณ
-                ctx.fillText('KKU', 0, 1); // วาดตัวอักษร (ปรับ y นิดหน่อยให้กลางเป๊ะ)
-                ctx.restore();
+                // Golden Ring
+                favCtx.strokeStyle = '#FFD700';
+                favCtx.lineWidth = 3;
+                favCtx.lineCap = 'round';
+                favCtx.beginPath();
+                favCtx.arc(16, 16, 13, favAngle, favAngle + Math.PI / 1.5);
+                favCtx.stroke();
 
-                // 5. อัปเดตค่ามุมหมุน
-                angle += 0.15; // ความเร็วการหมุน
+                // Text Pulse
+                favCtx.fillStyle = '#FFFFFF';
+                favCtx.font = 'bold 10px sans-serif';
+                favCtx.textAlign = 'center';
+                favCtx.textBaseline = 'middle';
+                var scale = 1 + Math.sin(favAngle * 3) * 0.1;
+                favCtx.save();
+                favCtx.translate(16, 16);
+                favCtx.scale(scale, scale);
+                favCtx.fillText('KKU', 0, 1);
+                favCtx.restore();
 
-                // 6. อัปเดตไปที่ Favicon Tag
-                link.href = canvas.toDataURL('image/png');
-
-                // 7. วนลูป (ใช้ setTimeout เพื่อควบคุม Frame rate ไม่ให้กิน CPU)
-                setTimeout(animate, 50);
+                favAngle += 0.15;
+                link.href = favCanvas.toDataURL('image/png');
+                setTimeout(animateFavicon, 50);
             }
+            animateFavicon();
 
-            animate();
+            // ==========================================
+            // 2. NAVBAR LOGO ANIMATION (โลโก้บนเว็บ)
+            // ==========================================
+            var navCanvas = document.getElementById('navLogoCanvas');
+            if (navCanvas) {
+                var navCtx = navCanvas.getContext('2d');
+                var navAngle = 0;
+
+                function animateNavLogo() {
+                    // กำหนดขนาด Canvas (60x60 เพื่อความคมชัดบนจอ Retina แล้ว CSS ย่อเหลือ 45px)
+                    var w = navCanvas.width;
+                    var h = navCanvas.height;
+                    var cx = w / 2;
+                    var cy = h / 2;
+
+                    navCtx.clearRect(0, 0, w, h);
+
+                    // 2.1 วาดพื้นหลัง (Red Circle with Shadow)
+                    navCtx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+                    navCtx.shadowBlur = 10;
+                    navCtx.shadowOffsetX = 0;
+                    navCtx.shadowOffsetY = 4;
+                    
+                    navCtx.fillStyle = '#A73B24';
+                    navCtx.beginPath();
+                    navCtx.arc(cx, cy, 26, 0, Math.PI * 2); // รัศมี 26px
+                    navCtx.fill();
+
+                    // Reset Shadow for next elements
+                    navCtx.shadowColor = 'transparent';
+
+                    // 2.2 วาดวงแหวนหมุน 2 ชั้น (Double Orbit)
+                    
+                    // วงนอก (สีทอง)
+                    navCtx.strokeStyle = '#FFD700'; 
+                    navCtx.lineWidth = 3;
+                    navCtx.lineCap = 'round';
+                    navCtx.beginPath();
+                    navCtx.arc(cx, cy, 24, navAngle, navAngle + Math.PI); // ยาวครึ่งวงกลม
+                    navCtx.stroke();
+
+                    // วงใน (สีขาวจางๆ หมุนสวนทาง)
+                    navCtx.strokeStyle = 'rgba(255, 255, 255, 0.5)'; 
+                    navCtx.lineWidth = 2;
+                    navCtx.beginPath();
+                    navCtx.arc(cx, cy, 20, -navAngle * 1.5, -navAngle * 1.5 + Math.PI / 2); 
+                    navCtx.stroke();
+
+                    // 2.3 วาดตัวหนังสือ KKU
+                    navCtx.fillStyle = '#FFFFFF';
+                    navCtx.font = 'bold 18px "Prompt", sans-serif'; // ใช้ฟอนต์ Prompt ให้เข้ากับเว็บ
+                    navCtx.textAlign = 'center';
+                    navCtx.textBaseline = 'middle';
+                    
+                    // Effect: ตัวหนังสือลอยขึ้นลงเบาๆ (Floating)
+                    var floatY = Math.sin(navAngle * 2) * 1.5; 
+                    navCtx.fillText('KKU', cx, cy + 2 + floatY); 
+
+                    navAngle += 0.05; // ความเร็วหมุน (ช้ากว่า Favicon หน่อยเพื่อความหรูหรา)
+                    requestAnimationFrame(animateNavLogo);
+                }
+                animateNavLogo();
+            }
         });
     </script>
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts (Prompt) -->
@@ -117,15 +173,17 @@
             align-items: center;
             gap: 12px;
         }
-        .navbar-logo {
+        
+        /* สไตล์สำหรับ Canvas Logo */
+        #navLogoCanvas {
+            width: 45px;      /* ขนาดที่แสดงผลจริง */
             height: 45px;
-            width: 45px;
-            /* ปรับแต่งโลโก้ให้สวยขึ้น */
-            border-radius: 12px; 
-            transition: transform 0.3s ease;
+            cursor: pointer;
+            /* เพิ่ม transition ถ้าอยากให้มีลูกเล่นตอนเอาเมาส์ชี้เพิ่ม */
+            transition: filter 0.3s ease;
         }
-        .navbar-brand:hover .navbar-logo {
-            transform: rotate(10deg); /* ลูกเล่นหมุนนิดหน่อยตอนเอาเมาส์ชี้ */
+        .navbar-brand:hover #navLogoCanvas {
+            filter: brightness(1.1); /* สว่างขึ้นเล็กน้อยเมื่อชี้ */
         }
 
         /* Hero Section */
@@ -232,9 +290,8 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
             <div class="container">
                 <a class="navbar-brand" href="#">
-                    <!-- ใช้รูปเดียวกับ Favicon แต่ปรับขนาดให้เหมาะสม -->
-                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjEwMCIgZmlsbD0iI0E3M0IyNCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtc2l6ZT0iMjUwIiBmaWxsPSJ3aGl0ZSI+S0tVPC90ZXh0Pjwvc3ZnPg==" 
-                         alt="KKU Logo" class="navbar-logo shadow-sm">
+                    <!-- ใช้ Canvas แทน img เพื่อทำ Animation -->
+                    <canvas id="navLogoCanvas" width="60" height="60" class="navbar-logo shadow-sm"></canvas>
                     <span>KKU Guide</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
