@@ -1,206 +1,427 @@
 <!DOCTYPE html>
 <html lang="th">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Student Management System</title>
-    <!-- ใช้ Tailwind CSS (ผ่าน CDN) เพื่อความสวยงาม -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Icon Library: Lucide -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap');
+<head>
+  <meta charset="UTF-8" />
+  <title>Student Management System</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <!-- Custom Theme -->
+  <style>
+   /* Glassmorphism Utility */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            /* Slightly visible white background */
+            backdrop-filter: blur(15px);
+            /* Apply blur effect */
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            /* Light border */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            color: rgb(0, 0, 0);
+            transition: 0.3s;
+            animation: fadeUp 0.8s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        /* General Styles - Terracotta/Warm Tone */
         body {
-            font-family: 'Sarabun', sans-serif;
-            background-color: #f3f4f6; /* Light gray background */
+            /* Saddle Brown to Sienna */
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            font-family: "Prompt", sans-serif;
+            padding-bottom: 70px;
+            animation: fadeIn 1.2s ease;
         }
-        /* Custom scrollbar style for table */
-        .table-container::-webkit-scrollbar {
-            height: 8px;
-        }
-        .table-container::-webkit-scrollbar-thumb {
-            background-color: #cbd5e1;
-            border-radius: 4px;
-        }
-    </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary-blue': '#1e40af',
-                        'primary-light': '#3b82f6',
-                        'success-green': '#10b981',
-                        'gray-header': '#1f2937'
-                    }
-                }
-            }
-        }
-    </script>
-  </head>
 
-  <body>
-    <!-- Navbar -->
-    <nav class="bg-primary-blue shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <a class="flex items-center text-white text-2xl font-bold gap-3" href="#">
-                    <i data-lucide="graduation-cap" class="w-7 h-7"></i>
-                    Student Management System
-                </a>
-            </div>
-        </div>
-    </nav>
+        h2 {
+            color: #FFDAB9;
+            /* Peach Puff - Light Orange */
+            font-weight: 700;
+            animation: slideDown 0.9s ease-out;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Orange glow */
+        }
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      
-      <!-- 1. Add Student Form -->
-      <div class="bg-white shadow-xl rounded-xl p-6 mb-6">
-        <h5 class="text-xl font-bold text-primary-light mb-4 flex items-center gap-2 border-b pb-3">
-            <i data-lucide="user-plus" class="w-6 h-6"></i>
-            เพิ่มข้อมูลนักศึกษาใหม่
-        </h5>
-        <form id="addStudentForm">
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-            
-            <div class="md:col-span-3">
-              <label for="id" class="block text-sm font-medium text-gray-500">รหัสนักศึกษา</label>
-              <input id="id" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-light focus:ring-primary-light p-2.5" placeholder="6xxxxxxxxx" required />
-            </div>
-            
-            <div class="md:col-span-2">
-              <label for="title" class="block text-sm font-medium text-gray-500">คำนำหน้า</label>
-              <select id="title" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-light focus:ring-primary-light p-2.5">
-                <option value="" selected disabled>เลือก...</option>
-                <option value="นาย">นาย</option>
-                <option value="นางสาว">นางสาว</option>
-                <option value="นาง">นาง</option>
-              </select>
-            </div>
-            
-            <div class="md:col-span-3">
-              <label for="firstName" class="block text-sm font-medium text-gray-500">ชื่อจริง</label>
-              <input id="firstName" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-light focus:ring-primary-light p-2.5" placeholder="ชื่อจริง" required />
-            </div>
-            
-            <div class="md:col-span-4">
-              <label for="lastName" class="block text-sm font-medium text-gray-500">นามสกุล</label>
-              <input id="lastName" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-light focus:ring-primary-light p-2.5" placeholder="นามสกุล" required />
-            </div>
+        h5, label {
+            color: #F4A460;
+            /* Sandy Brown - Soft Orange */
+            font-weight: 600;
+        }
+        
+        #currentUserId {
+            color: rgba(255, 255, 255, 0.7);
+        }
 
-            <div class="md:col-span-4">
-              <label for="email" class="block text-sm font-medium text-gray-500">อีเมล</label>
-              <div class="mt-1 flex rounded-md shadow-sm">
-                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
-                    <i data-lucide="mail" class="w-4 h-4"></i>
-                </span>
-                <input id="email" type="email" class="flex-1 block w-full rounded-none rounded-r-md border-gray-300 focus:border-primary-light focus:ring-primary-light p-2.5" placeholder="student@example.com" />
-              </div>
-            </div>
-            
-            <div class="md:col-span-2">
-              <label for="year" class="block text-sm font-medium text-gray-500">ชั้นปี</label>
-              <select id="year" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-light focus:ring-primary-light p-2.5">
-                <option value="1">ปี 1</option>
-                <option value="2">ปี 2</option>
-                <option value="3">ปี 3</option>
-                <option value="4">ปี 4</option>
-                <option value="5">อื่นๆ</option>
-              </select>
-            </div>
-            
-            <div class="md:col-span-3">
-              <label for="major" class="block text-sm font-medium text-gray-500">สาขาวิชา</label>
-              <input id="major" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-light focus:ring-primary-light p-2.5" placeholder="เช่น CS, IT, SE" />
-            </div>
-            
-            <div class="md:col-span-3 flex items-end">
-              <button id="addBtn" type="button" class="bg-success-green hover:bg-green-700 text-white font-bold py-2.5 px-4 rounded-lg shadow-md transition duration-150 w-full flex justify-center items-center gap-2">
-                <i data-lucide="check-circle" class="w-5 h-5"></i> บันทึกข้อมูล
-              </button>
-            </div>
-            
-          </div>
-        </form>
+        /* Input Fields */
+        .form-control {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: rgb(255, 0, 0);
+            border-radius: 12px;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #F4A460;
+            box-shadow: 0 0 0 0.25rem rgba(244, 164, 96, 0.5);
+            color: rgb(255, 0, 0);
+        }
+
+        /* Buttons */
+        .btn-primary-custom {
+            /* Dark Orange to Orange */
+            background: linear-gradient(45deg, #FF8C00, #FFA500);
+            color: rgb(255, 0, 0);
+            border-radius: 15px;
+            font-weight: 600;
+            transition: 0.25s;
+            border: none;
+            box-shadow: 0 6px 15px rgba(255, 140, 0, 0.4);
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px) scale(1.02);
+            /* Tomato to Dark Orange */
+            background: linear-gradient(45deg, #FF6347, #FF8C00);
+            box-shadow: 0 8px 20px rgba(255, 140, 0, 0.6);
+            color: rgb(255, 0, 0);
+        }
+        
+        .btn-outline-secondary-custom {
+            background: rgba(255, 255, 255, 0.1);
+            color: #F4A460;
+            border: 1px solid #F4A460;
+            border-radius: 15px;
+            font-weight: 600;
+            transition: 0.25s;
+        }
+        .btn-outline-secondary-custom:hover {
+             background: rgba(255, 255, 255, 0.2);
+             color: #FFDAB9;
+             border-color: #FFDAB9;
+        }
+
+
+        .btn-danger-custom {
+            background: #D2691E;
+            /* Chocolate - Dark Orange/Brown for Danger */
+            color: rgb(255, 0, 0);
+            border-radius: 10px;
+            padding: 6px 12px;
+            border: none;
+        }
+        .btn-danger-custom:hover {
+            background: #A0522D; /* Sienna */
+        }
+
+        .btn-warning-custom {
+            background: #FFD700;
+            /* Gold for Edit */
+            color: #333;
+            border-radius: 10px;
+            padding: 6px 12px;
+            border: none;
+        }
+
+        /* Table Styling */
+        .table {
+            --bs-table-bg: rgba(255, 255, 255, 0.05);
+            /* Transparent table background */
+            --bs-table-striped-bg: rgba(255, 255, 255, 0.1);
+            --bs-table-border-color: rgba(255, 255, 255, 0.2);
+            color: rgb(255, 0, 0);
+        }
+
+        .table thead {
+            background: rgba(139, 69, 19, 0.5); /* Semi-transparent Saddle Brown */
+            color: #FFDAB9;
+            /* Extra Light Orange */
+            border-bottom: 2px solid #F4A460;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Fire Effect (for search highlight) - Orange glow */
+        .fire-effect {
+            animation: pulseGlow 1.2s ease-in-out infinite alternate;
+            background: rgba(255, 165, 0, 0.2) !important;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 6px 3px rgba(255, 165, 0, 0.6); }
+            100% { box-shadow: 0 0 14px 6px rgba(255, 69, 0, 0.9); }
+        }
+
+        /* Sticky Header */
+        .floating-header {
+            position: sticky;
+            top: 0;
+            background: rgba(139, 69, 19, 0.8); /* Semi-transparent Saddle Brown */
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            z-index: 10;
+            margin-bottom: 20px;
+        }
+ 
+        
+  </style>
+</head>
+
+<body class="p-4">
+
+  <!-- Header -->
+  <div class="floating-header text-center mb-3">
+    <h2>ระบบจัดการนักศึกษา (Student Management System)</h2>
+  </div>
+
+  <!-- ADD STUDENT FORM -->
+  <div class="card p-4 mb-4">
+    <h5 class="text-success mb-3">➕ เพิ่ม / แก้ไข นักศึกษา</h5>
+
+    <div class="row g-3">
+      <div class="col-md-2"><input id="id" type="text" class="form-control" placeholder="Student ID" /></div>
+      <div class="col-md-2"><input id="title_name" type="text" class="form-control" placeholder="คำนำหน้า" /></div>
+      <div class="col-md-2"><input id="first_name" type="text" class="form-control" placeholder="ชื่อ" /></div>
+      <div class="col-md-2"><input id="last_name" type="text" class="form-control" placeholder="นามสกุล" /></div>
+      <div class="col-md-3"><input id="email" type="email" class="form-control" placeholder="Email" /></div>
+      <div class="col-md-2"><input id="year" type="number" class="form-control" placeholder="ชั้นปี" /></div>
+      <div class="col-md-3"><input id="major" type="text" class="form-control" placeholder="สาขา" /></div>
+
+      <div class="col-md-2 d-grid">
+        <button id="addBtn" class="btn btn-green">บันทึกข้อมูล</button>
       </div>
-
-      <!-- 2. Search Controls -->
-      <div class="bg-white shadow-xl rounded-xl p-6 mb-6">
-        <h5 class="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2 border-b pb-3">
-            <i data-lucide="search" class="w-6 h-6"></i>
-            ค้นหาและกรองข้อมูล
-        </h5>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-500">ค้นหาด้วยชื่อ/นามสกุล</label>
-                <div class="mt-1 flex rounded-md shadow-sm">
-                    <input id="searchName" type="text" class="flex-1 block w-full rounded-l-md border-gray-300 focus:border-primary-light focus:ring-primary-light p-2.5" placeholder="ระบุชื่อนักศึกษา..." />
-                    <button id="searchNameBtn" class="bg-primary-light hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-r-md transition duration-150">
-                        <i data-lucide="search" class="w-5 h-5"></i>
-                    </button>
-                </div>
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-500">ค้นหาด้วยสาขาวิชา</label>
-                <div class="mt-1 flex rounded-md shadow-sm">
-                    <input id="searchMajor" type="text" class="flex-1 block w-full rounded-l-md border-gray-300 focus:border-primary-light focus:ring-primary-light p-2.5" placeholder="ระบุสาขาวิชา..." />
-                    <button id="searchMajorBtn" class="bg-gray-500 hover:bg-gray-700 text-white font-semibold py-2.5 px-4 rounded-r-md transition duration-150">
-                        <i data-lucide="filter" class="w-5 h-5"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <!-- เพิ่มค้นหาด้วย Email (เพื่อให้ตรงกับ app.ts) -->
-        <div class="grid grid-cols-1 mt-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-500">ค้นหาด้วยอีเมล</label>
-                <div class="mt-1 flex rounded-md shadow-sm">
-                    <input id="searchEmail" type="email" class="flex-1 block w-full rounded-l-md border-gray-300 focus:border-primary-light focus:ring-primary-light p-2.5" placeholder="ระบุอีเมล..." />
-                    <button id="searchEmailBtn" class="bg-indigo-500 hover:bg-indigo-700 text-white font-semibold py-2.5 px-4 rounded-r-md transition duration-150">
-                        <i data-lucide="mail-search" class="w-5 h-5"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+      <div class="col-md-2 d-grid">
+        <button id="clearAllBtn" class="btn btn-red">ล้างข้อมูลทั้งหมด</button>
       </div>
-
-      <!-- 3. Student List Table -->
-      <div class="bg-white shadow-xl rounded-xl">
-        <div class="p-6">
-            <h5 class="text-xl font-bold text-gray-700 flex items-center gap-2">
-                <i data-lucide="list-checks" class="w-6 h-6"></i>
-                รายชื่อนักศึกษาทั้งหมด
-            </h5>
-        </div>
-        <div class="table-container overflow-x-auto rounded-b-xl">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-header text-white sticky top-0">
-              <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">ID</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">ชื่อ-สกุล</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">อีเมล</th>
-                <th scope="col" class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">ปี</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">สาขา</th>
-                <th scope="col" class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">Action</th>
-              </tr>
-            </thead>
-            <!-- **สำคัญ: เพิ่ม tbody พร้อม ID** -->
-            <tbody id="studentTableBody" class="bg-white divide-y divide-gray-200">
-              <!-- Data will be injected here by app.js -->
-            </tbody>
-          </table>
-        </div>
-        <div class="p-4 text-center text-gray-500" id="listStatus">
-            <!-- สถานะรายการจะแสดงที่นี่ -->
-        </div>
-      </div>
-
     </div>
-    
-    <script>
-        // Icon rendering
-        lucide.createIcons();
-    </script>
-    <script type="module" src="./dist/app.js"></script>
-  </body>
+  </div>
+
+  <!-- Search by name -->
+  <div class="card p-4 mb-4">
+    <h5 class="text-success">🔍 ค้นหาด้วยชื่อ</h5>
+    <input id="searchName" class="form-control mb-2" placeholder="ป้อนคำค้นหา" />
+    <button id="searchNameBtn" class="btn btn-green">ค้นหา</button>
+  </div>
+
+  <!-- Search by major -->
+  <div class="card p-4 mb-4">
+    <h5 class="text-success">🔍 ค้นหาด้วยสาขา</h5>
+    <input id="searchMajor" class="form-control mb-2" placeholder="ป้อนสาขา" />
+    <button id="searchMajorBtn" class="btn btn-green">ค้นหา</button>
+  </div>
+
+  <!-- Search by Email -->
+  <div class="card p-4 mb-4">
+    <h5 class="text-success">🔍 ค้นหาด้วย Email</h5>
+    <input id="searchEmail" class="form-control mb-2" placeholder="กรอก Email" />
+    <button id="searchEmailBtn" class="btn btn-green">ค้นหา</button>
+  </div>
+
+  <!-- TABLE -->
+  <div class="card p-4">
+    <table class="table table-bordered table-striped align-middle">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>คำนำหน้า</th>
+          <th>ชื่อ</th>
+          <th>นามสกุล</th>
+          <th>Email</th>
+          <th>ชั้นปี</th>
+          <th>สาขา</th>
+        </tr>
+      </thead>
+      <tbody id="studentTableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Welcome Popup -->
+  <div class="modal fade modern-modal" id="welcomeModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-header border-0">
+          <h4 class="modal-title text-success w-100 text-center">
+            ยินดีต้อนรับ! 🎉
+          </h4>
+        </div>
+
+        <div class="modal-body text-center">
+          <p style="font-size: 17px;">
+            ระบบจัดการนักศึกษา  
+            <br>พร้อมให้คุณเริ่มใช้งานแล้ว 😊
+          </p>
+        </div>
+
+        <div class="modal-footer border-0 d-flex justify-content-center">
+          <button id="closeWelcome" type="button" class="btn btn-green">
+            เริ่มใช้งาน
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    let editIndex = -1;
+    const tableBody = document.getElementById("studentTableBody");
+
+    function loadData() {
+      const data = localStorage.getItem("students_v2");
+      return data ? JSON.parse(data) : [];
+    }
+
+    function saveData(data) {
+      localStorage.setItem("students_v2", JSON.stringify(data));
+    }
+
+    function renderTable() {
+      const data = loadData();
+      tableBody.innerHTML = "";
+
+      data.forEach((std, index) => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td>${std.id}</td>
+          <td>${std.title_name}</td>
+          <td>${std.first_name}</td>
+          <td>${std.last_name}</td>
+          <td>${std.email}</td>
+          <td>${std.year}</td>
+          <td>${std.major}</td>
+          <td>
+            <button class="btn btn-yellow btn-sm" onclick="editStudent(${index})">แก้ไข</button>
+            <button class="btn btn-red btn-sm" onclick="deleteStudent(${index})">ลบ</button>
+          </td>
+        `;
+
+        tableBody.appendChild(tr);
+      });
+    }
+
+    function editStudent(index) {
+      const data = loadData();
+      const std = data[index];
+
+      editIndex = index;
+
+      document.getElementById("id").value = std.id;
+      document.getElementById("title_name").value = std.title_name;
+      document.getElementById("first_name").value = std.first_name;
+      document.getElementById("last_name").value = std.last_name;
+      document.getElementById("email").value = std.email;
+      document.getElementById("year").value = std.year;
+      document.getElementById("major").value = std.major;
+
+      document.getElementById("addBtn").innerText = "อัปเดตข้อมูล";
+    }
+
+    function deleteStudent(index) {
+      const data = loadData();
+      data.splice(index, 1);
+      saveData(data);
+      renderTable();
+    }
+
+    document.getElementById("addBtn").addEventListener("click", () => {
+      const std = {
+        id: document.getElementById("id").value,
+        title_name: document.getElementById("title_name").value,
+        first_name: document.getElementById("first_name").value,
+        last_name: document.getElementById("last_name").value,
+        email: document.getElementById("email").value,
+        year: document.getElementById("year").value,
+        major: document.getElementById("major").value,
+      };
+
+      let data = loadData();
+
+      if (editIndex === -1) {
+        data.push(std);
+      } else {
+        data[editIndex] = std;
+        editIndex = -1;
+        document.getElementById("addBtn").innerText = "บันทึกข้อมูล";
+      }
+
+      saveData(data);
+      renderTable();
+    });
+
+    document.getElementById("clearAllBtn").onclick = () => {
+      if (confirm("ต้องการล้างข้อมูลทั้งหมดหรือไม่?")) {
+        localStorage.removeItem("students_v2");
+        renderTable();
+      }
+    };
+
+    // ฟังก์ชันค้นหาแบบ 3 ช่อง
+    function searchAndFire(inputId) {
+      const key = document.getElementById(inputId).value.toLowerCase();
+      const rows = tableBody.getElementsByTagName("tr");
+
+      [...rows].forEach(r => {
+        r.classList.remove("fire-effect");
+
+        if (r.innerText.toLowerCase().includes(key) && key !== "") {
+          r.classList.add("fire-effect");
+        }
+      });
+    }
+
+    document.getElementById("searchNameBtn").onclick = () => searchAndFire("searchName");
+    document.getElementById("searchMajorBtn").onclick = () => searchAndFire("searchMajor");
+    document.getElementById("searchEmailBtn").onclick = () => searchAndFire("searchEmail");
+
+    const welcomeModalEl = document.getElementById("welcomeModal");
+    const welcomeModal = new bootstrap.Modal(welcomeModalEl);
+
+    window.onload = () => {
+      renderTable();
+      welcomeModal.show();
+    };
+
+    document.getElementById("closeWelcome").onclick = () => {
+      const modalContent = welcomeModalEl.querySelector(".modal-content");
+      modalContent.classList.add("closing");
+
+      setTimeout(() => {
+        welcomeModal.hide();
+        modalContent.classList.remove("closing");
+      }, 400);
+    };
+  </script>
+
+</body>
 </html>

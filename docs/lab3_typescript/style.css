@@ -1,0 +1,219 @@
+/* Glassmorphism Utility */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            /* Slightly visible white background */
+            backdrop-filter: blur(15px);
+            /* Apply blur effect */
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            /* Light border */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            color: white;
+            transition: 0.3s;
+            animation: fadeUp 0.8s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        /* General Styles - Terracotta/Warm Tone */
+        body {
+            /* Saddle Brown to Sienna */
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            font-family: "Prompt", sans-serif;
+            padding-bottom: 70px;
+            animation: fadeIn 1.2s ease;
+        }
+
+        h2 {
+            color: #FFDAB9;
+            /* Peach Puff - Light Orange */
+            font-weight: 700;
+            animation: slideDown 0.9s ease-out;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 165, 0, 0.5); /* Orange glow */
+        }
+
+        h5, label {
+            color: #F4A460;
+            /* Sandy Brown - Soft Orange */
+            font-weight: 600;
+        }
+        
+        #currentUserId {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Input Fields */
+        .form-control {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            border-radius: 12px;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #F4A460;
+            box-shadow: 0 0 0 0.25rem rgba(244, 164, 96, 0.5);
+            color: white;
+        }
+
+        /* Buttons */
+        .btn-primary-custom {
+            /* Dark Orange to Orange */
+            background: linear-gradient(45deg, #FF8C00, #FFA500);
+            color: white;
+            border-radius: 15px;
+            font-weight: 600;
+            transition: 0.25s;
+            border: none;
+            box-shadow: 0 6px 15px rgba(255, 140, 0, 0.4);
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px) scale(1.02);
+            /* Tomato to Dark Orange */
+            background: linear-gradient(45deg, #FF6347, #FF8C00);
+            box-shadow: 0 8px 20px rgba(255, 140, 0, 0.6);
+            color: white;
+        }
+        
+        .btn-outline-secondary-custom {
+            background: rgba(255, 255, 255, 0.1);
+            color: #F4A460;
+            border: 1px solid #F4A460;
+            border-radius: 15px;
+            font-weight: 600;
+            transition: 0.25s;
+        }
+        .btn-outline-secondary-custom:hover {
+             background: rgba(255, 255, 255, 0.2);
+             color: #FFDAB9;
+             border-color: #FFDAB9;
+        }
+
+
+        .btn-danger-custom {
+            background: #D2691E;
+            /* Chocolate - Dark Orange/Brown for Danger */
+            color: white;
+            border-radius: 10px;
+            padding: 6px 12px;
+            border: none;
+        }
+        .btn-danger-custom:hover {
+            background: #A0522D; /* Sienna */
+        }
+
+        .btn-warning-custom {
+            background: #FFD700;
+            /* Gold for Edit */
+            color: #333;
+            border-radius: 10px;
+            padding: 6px 12px;
+            border: none;
+        }
+
+        /* Table Styling */
+        .table {
+            --bs-table-bg: rgba(255, 255, 255, 0.05);
+            /* Transparent table background */
+            --bs-table-striped-bg: rgba(255, 255, 255, 0.1);
+            --bs-table-border-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .table thead {
+            background: rgba(139, 69, 19, 0.5); /* Semi-transparent Saddle Brown */
+            color: #FFDAB9;
+            /* Extra Light Orange */
+            border-bottom: 2px solid #F4A460;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Fire Effect (for search highlight) - Orange glow */
+        .fire-effect {
+            animation: pulseGlow 1.2s ease-in-out infinite alternate;
+            background: rgba(255, 165, 0, 0.2) !important;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 6px 3px rgba(255, 165, 0, 0.6); }
+            100% { box-shadow: 0 0 14px 6px rgba(255, 69, 0, 0.9); }
+        }
+
+        /* Sticky Header */
+        .floating-header {
+            position: sticky;
+            top: 0;
+            background: rgba(139, 69, 19, 0.8); /* Semi-transparent Saddle Brown */
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            z-index: 10;
+            margin-bottom: 20px;
+        }
+
+        /* Modal Styles */
+        .modern-modal .modal-content {
+            border-radius: 25px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            /* Glassmorphism effect in modal */
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            animation: popupShow 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: white;
+        }
+
+        .modern-modal .modal-header .modal-title {
+            color: #FFDAB9;
+        }
+        
+        /* Custom Modal (replacing alerts/confirms) */
+        .custom-modal-header {
+            border-bottom: none;
+            color: #FFDAB9;
+            font-weight: 600;
+        }
+        .custom-modal .modal-content {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: #8B4513; /* Darker Modal BG */
+        }
+        .custom-modal .modal-body {
+            color: #FFDAB9;
+        }
+        .custom-modal .modal-footer .btn-primary {
+            background-color: #FF8C00;
+            border-color: #FF8C00;
+        }
+
+        @keyframes popupShow {
+            from { opacity: 0; transform: scale(0.8) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
