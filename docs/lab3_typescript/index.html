@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Management System</title>
+    <!-- ใช้ Tailwind CSS (ผ่าน CDN) เพื่อความสวยงาม -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icon Library: Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        /* Custom scrollbar style for table */
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        .table-container::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-blue': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'success-green': '#10b981',
+                        'gray-header': '#1f2937'
+                    }
+                }
+            }
+        }
+    </script>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="bg-primary-blue shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a class="flex items-center text-white text-2xl font-bold gap-3" href="#">
+                    <i data-lucide="graduation-cap" class="w-7 h-7"></i>
+                    Student Management System
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      
+      <!-- 1. Add Student Form -->
+      <div class="bg-white shadow-xl rounded-xl p-6 mb-6">
+        <h5 class="text-xl font-bold text-primary-light mb-4 flex items-center gap-2 border-b pb-3">
+            <i data-lucide="user-plus" class="w-6 h-6"></i>
+            เพิ่มข้อมูลนักศึกษาใหม่
+        </h5>
+        <form id="addStudentForm">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            
+            <div class="md:col-span-3">
+              <label for="id" class="block text-sm font-medium text-gray-500">รหัสนักศึกษา</label>
+              <input id="id" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-light focus:ring-primary-light p-2.5" placeholder="6xxxxxxxxx" required />
+            </div>
+            
+            <div class="md:col-span-2">
+              <label for="title" class="block text-sm font-medium text-gray-500">คำนำหน้า</label>
+              <select id="title" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-light focus:ring-primary-light p-2.5">
+                <option value="" selected disabled>เลือก...</option>
+                <option value="นาย">นาย</option>
+                <option value="นางสาว">นางสาว</option>
+                <option value="นาง">นาง</option>
+              </select>
+            </div>
+            
+            <div class="md:col-span-3">
+              <label for="firstName" class="block text-sm font-medium text-gray-500">ชื่อจริง</label>
+              <input id="firstName" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-light focus:ring-primary-light p-2.5" placeholder="ชื่อจริง" required />
+            </div>
+            
+            <div class="md:col-span-4">
+              <label for="lastName" class="block text-sm font-medium text-gray-500">นามสกุล</label>
+              <input id="lastName" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-light focus:ring-primary-light p-2.5" placeholder="นามสกุล" required />
+            </div>
+
+            <div class="md:col-span-4">
+              <label for="email" class="block text-sm font-medium text-gray-500">อีเมล</label>
+              <div class="mt-1 flex rounded-md shadow-sm">
+                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                    <i data-lucide="mail" class="w-4 h-4"></i>
+                </span>
+                <input id="email" type="email" class="flex-1 block w-full rounded-none rounded-r-md border-gray-300 focus:border-primary-light focus:ring-primary-light p-2.5" placeholder="student@example.com" />
+              </div>
+            </div>
+            
+            <div class="md:col-span-2">
+              <label for="year" class="block text-sm font-medium text-gray-500">ชั้นปี</label>
+              <select id="year" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-light focus:ring-primary-light p-2.5">
+                <option value="1">ปี 1</option>
+                <option value="2">ปี 2</option>
+                <option value="3">ปี 3</option>
+                <option value="4">ปี 4</option>
+                <option value="5">อื่นๆ</option>
+              </select>
+            </div>
+            
+            <div class="md:col-span-3">
+              <label for="major" class="block text-sm font-medium text-gray-500">สาขาวิชา</label>
+              <input id="major" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-light focus:ring-primary-light p-2.5" placeholder="เช่น CS, IT, SE" />
+            </div>
+            
+            <div class="md:col-span-3 flex items-end">
+              <button id="addBtn" type="button" class="bg-success-green hover:bg-green-700 text-white font-bold py-2.5 px-4 rounded-lg shadow-md transition duration-150 w-full flex justify-center items-center gap-2">
+                <i data-lucide="check-circle" class="w-5 h-5"></i> บันทึกข้อมูล
+              </button>
+            </div>
+            
+          </div>
+        </form>
+      </div>
+
+      <!-- 2. Search Controls -->
+      <div class="bg-white shadow-xl rounded-xl p-6 mb-6">
+        <h5 class="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2 border-b pb-3">
+            <i data-lucide="search" class="w-6 h-6"></i>
+            ค้นหาและกรองข้อมูล
+        </h5>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-500">ค้นหาด้วยชื่อ/นามสกุล</label>
+                <div class="mt-1 flex rounded-md shadow-sm">
+                    <input id="searchName" type="text" class="flex-1 block w-full rounded-l-md border-gray-300 focus:border-primary-light focus:ring-primary-light p-2.5" placeholder="ระบุชื่อนักศึกษา..." />
+                    <button id="searchNameBtn" class="bg-primary-light hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-r-md transition duration-150">
+                        <i data-lucide="search" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-500">ค้นหาด้วยสาขาวิชา</label>
+                <div class="mt-1 flex rounded-md shadow-sm">
+                    <input id="searchMajor" type="text" class="flex-1 block w-full rounded-l-md border-gray-300 focus:border-primary-light focus:ring-primary-light p-2.5" placeholder="ระบุสาขาวิชา..." />
+                    <button id="searchMajorBtn" class="bg-gray-500 hover:bg-gray-700 text-white font-semibold py-2.5 px-4 rounded-r-md transition duration-150">
+                        <i data-lucide="filter" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- เพิ่มค้นหาด้วย Email (เพื่อให้ตรงกับ app.ts) -->
+        <div class="grid grid-cols-1 mt-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-500">ค้นหาด้วยอีเมล</label>
+                <div class="mt-1 flex rounded-md shadow-sm">
+                    <input id="searchEmail" type="email" class="flex-1 block w-full rounded-l-md border-gray-300 focus:border-primary-light focus:ring-primary-light p-2.5" placeholder="ระบุอีเมล..." />
+                    <button id="searchEmailBtn" class="bg-indigo-500 hover:bg-indigo-700 text-white font-semibold py-2.5 px-4 rounded-r-md transition duration-150">
+                        <i data-lucide="mail-search" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <!-- 3. Student List Table -->
+      <div class="bg-white shadow-xl rounded-xl">
+        <div class="p-6">
+            <h5 class="text-xl font-bold text-gray-700 flex items-center gap-2">
+                <i data-lucide="list-checks" class="w-6 h-6"></i>
+                รายชื่อนักศึกษาทั้งหมด
+            </h5>
+        </div>
+        <div class="table-container overflow-x-auto rounded-b-xl">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-header text-white sticky top-0">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">ID</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">ชื่อ-สกุล</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">อีเมล</th>
+                <th scope="col" class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">ปี</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">สาขา</th>
+                <th scope="col" class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">Action</th>
+              </tr>
+            </thead>
+            <!-- **สำคัญ: เพิ่ม tbody พร้อม ID** -->
+            <tbody id="studentTableBody" class="bg-white divide-y divide-gray-200">
+              <!-- Data will be injected here by app.js -->
+            </tbody>
+          </table>
+        </div>
+        <div class="p-4 text-center text-gray-500" id="listStatus">
+            <!-- สถานะรายการจะแสดงที่นี่ -->
+        </div>
+      </div>
+
+    </div>
+    
+    <script>
+        // Icon rendering
+        lucide.createIcons();
+    </script>
+    <script type="module" src="./dist/app.js"></script>
+  </body>
+</html>
